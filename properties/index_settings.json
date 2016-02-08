@@ -1,0 +1,42 @@
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "my_stopwords_filter": {
+                    "type":       "stop",
+                    "stopwords":  "_english_"
+                }
+            },
+            "analyzer": {
+                "my_filter": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": [
+                        "lowercase",
+                        "apostrophe",
+                        "my_stopwords_filter"
+                    ]
+                }
+            },
+            "similarity" : {
+                "my_bm25" : {
+                    "type" : "BM25",
+                    "k1": 2.0,
+                    "b": 0.7
+                }
+            }
+        }
+    },
+    "mappings": {
+        "document": {
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "store": true,
+                    "similarity": "my_bm25",
+                    "analyzer": "my_filter"
+                }
+            }
+        }
+    }
+}
