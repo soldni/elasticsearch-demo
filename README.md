@@ -13,4 +13,4 @@ All documents and qrels in `data` are property of the [National Institute of Sta
 
 ## Caveats
 
-- the binary of trec_eval in `bin` has been compiled on OS X 10.11 using `llvm`. Depending on your system, you might need to recompile it from scratch.
+- the binary of trec_eval in `bin` has been compiled on OS X 10.11 using `llvm`. Depending on your system, you might need to recompile it from scratch. The source code is avaliable from [the NIST website](http://trec.nist.gov/trec_eval/trec_eval_latest.tar.gz). 
