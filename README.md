@@ -1,6 +1,6 @@
 # Elasticsearch demo
 
-Demo for Elasticsearch v.4.0 (might run on subsequent 2.x releases, too; does not work on Elasticsearch 0.x and 1.x; I have not tested it on Elasticsearch 5, which is still in beta).
+Demo for Elasticsearch v.2.4.0 (might run on subsequent 2.x releases, too; does not work on Elasticsearch 0.x and 1.x; I have not tested it on Elasticsearch 5, which is still in beta).
 
 All documents and qrels are property of the [National Institute of Standards and Technology](http://www.nist.gov) and have been released from research purposes as part of [TREC](http://trec.nist.gov).
 
