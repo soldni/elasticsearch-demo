@@ -1,9 +1,10 @@
-from __future__ import unicode_literals, division
+from __future__ import unicode_literals, division, print_function
 
 # built-in modules
 import re
 import os
 import json
+import platform
 import subprocess
 from tempfile import NamedTemporaryFile
 
@@ -148,6 +149,17 @@ def run_treceval(results, qrels_fp, treceval_fp):
             for i, doc in enumerate(docs):
                 tmp.write('{q_id} 0 {d_id} {i} {score:.5f} ES_DEMO\n'.format(
                     q_id=q_id, d_id=doc['_id'], i=i, score=doc['_score']))
+
+    # check if a version of treceval named "trec_eval"
+    # exists in the binary folder; if so, it means that
+    # such a version was manually compiled and it should
+    # be preferred. If such file does not exists, get the
+    # name of the platform this system is running on and
+    # attempt to use it to select the correct, pre-compiled
+    # version of treceval.
+    if not os.path.exists(treceval_fp):
+        platform_name = platform.system()
+        treceval_fp ='{}_{}'.format(treceval_fp, platform_name)
 
     # command to execute treceval
     cmd = ['./{}'.format(treceval_fp), qrels_fp, tmp_fn]
