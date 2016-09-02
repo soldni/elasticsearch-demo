@@ -1,5 +1,3 @@
-from __future__ import unicode_literals, division, print_function
-
 # built-in modules
 import re
 import os
@@ -140,7 +138,7 @@ def run_treceval(results, qrels_fp, treceval_fp):
     '''
 
     # create a temporary file
-    with NamedTemporaryFile(delete=False) as tmp:
+    with NamedTemporaryFile(delete=False, mode='w') as tmp:
         tmp_fn = tmp.name
 
         # write result to temporary file using trec_eval
@@ -165,14 +163,21 @@ def run_treceval(results, qrels_fp, treceval_fp):
     cmd = ['./{}'.format(treceval_fp), qrels_fp, tmp_fn]
 
     # executes treceval, catches response
-    proc = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    msg_out, msg_err = proc.communicate()
+    # the try...except...finally construct is necessary
+    # do delete the temporary file we created even if something
+    # goes wrong in the execution of treceval.
+    try:
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        resp = proc.communicate()
+        msg_out, msg_err = (msg.decode('utf-8') for msg in resp)
+    except Exception:
+        raise
+    finally:
+        os.remove(tmp_fn)
 
-    # remove temporary query file
-    os.remove(tmp_fn)
-    # print tmp_fn
-
+    # raise an error if trec_eval return an error
     if msg_err:
         raise OSError(msg_err)
 
@@ -184,7 +189,7 @@ def main():
     '''Script main method'''
 
     # load and parse queries
-    with file(QUERIES_FP) as f:
+    with open(QUERIES_FP) as f:
         queries = parse_raw_queries(f.read())
 
     # get results for query
