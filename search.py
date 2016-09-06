@@ -59,11 +59,11 @@ def parse_raw_queries(raw_data):
     return queries
 
 
-def make_query_dsl(str):
+def make_query_dsl(s):
     '''Return query in Elasticsearch DSL format
 
     Args:
-        str (basestring): query string
+        s (basestring): query string
 
     Returns:
         query (dict): query in Elasticsearch DSL format
@@ -74,7 +74,7 @@ def make_query_dsl(str):
         'query': {
             'match': {
                 'content': {
-                    'query': str,
+                    'query': s,
                     'operator': 'or'
                 }
             }
