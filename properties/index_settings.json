@@ -12,7 +12,7 @@
                 }
             },
             "analyzer": {
-                "my_filter": {
+                "my_analyzer": {
                     "type": "custom",
                     "tokenizer": "standard",
                     "filter": [
@@ -38,7 +38,7 @@
                     "type": "string",
                     "store": true,
                     "similarity": "my_bm25",
-                    "analyzer": "my_filter"
+                    "analyzer": "my_analyzer"
                 }
             }
         }
