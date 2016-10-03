@@ -29,18 +29,25 @@ def parse_raw_data(raw_data):
 
     # split documents by looking for end of document
     # and start of new document tags
-    raw_documents = re.split(r'</DOC>\s*<DOC>', raw_data)
+    raw_textuments = re.split(r'</DOC>\s*<DOC>', raw_data)
 
     for raw_doc in raw_documents:
         # find the document identifier
         doc_id = re.search(r'<DOCNO>\s([\w+-]+)\s</DOCNO>', raw_doc).group(1)
 
+        #remove parent
+        raw_doc = re.sub(r'<PARENT>\s([\w+-]+)\s</PARENT>', '', raw_doc)
+
         # split on text tags, grab what's between them
         # (i.e., the middle split)
         raw_text = re.split(r'</?TEXT>', raw_doc)[1]
 
+        # replace HTML entities
+        raw_text = re.sub(r'&blank;', ' ', raw_text)
+        raw_text = re.sub(r'&\w+;', '', raw_text)
+
         # remove all HTML tags
-        clean_text = re.sub('<.*?>', '', raw_text)
+        clean_text = re.sub(r'<.*?>', '', raw_text)
 
         # remove multiple spaces
         clean_compact_text = re.sub(r'(\r\n| )(\r\n| )*', r'\1', clean_text)
