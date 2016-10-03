@@ -1,9 +1,8 @@
-from __future__ import unicode_literals, division
-
 # built-in modules
 import re
 import os
 import json
+import platform
 import subprocess
 from tempfile import NamedTemporaryFile
 
@@ -60,11 +59,11 @@ def parse_raw_queries(raw_data):
     return queries
 
 
-def make_query_dsl(str):
+def make_query_dsl(s):
     '''Return query in Elasticsearch DSL format
 
     Args:
-        str (basestring): query string
+        s (basestring): query string
 
     Returns:
         query (dict): query in Elasticsearch DSL format
@@ -75,7 +74,7 @@ def make_query_dsl(str):
         'query': {
             'match': {
                 'content': {
-                    'query': str,
+                    'query': s,
                     'operator': 'or'
                 }
             }
@@ -139,7 +138,7 @@ def run_treceval(results, qrels_fp, treceval_fp):
     '''
 
     # create a temporary file
-    with NamedTemporaryFile(delete=False) as tmp:
+    with NamedTemporaryFile(delete=False, mode='w') as tmp:
         tmp_fn = tmp.name
 
         # write result to temporary file using trec_eval
@@ -149,18 +148,36 @@ def run_treceval(results, qrels_fp, treceval_fp):
                 tmp.write('{q_id} 0 {d_id} {i} {score:.5f} ES_DEMO\n'.format(
                     q_id=q_id, d_id=doc['_id'], i=i, score=doc['_score']))
 
+    # check if a version of treceval named "trec_eval"
+    # exists in the binary folder; if so, it means that
+    # such a version was manually compiled and it should
+    # be preferred. If such file does not exists, get the
+    # name of the platform this system is running on and
+    # attempt to use it to select the correct, pre-compiled
+    # version of treceval.
+    if not os.path.exists(treceval_fp):
+        platform_name = platform.system()
+        treceval_fp ='{}_{}'.format(treceval_fp, platform_name)
+
     # command to execute treceval
     cmd = ['./{}'.format(treceval_fp), qrels_fp, tmp_fn]
 
     # executes treceval, catches response
-    proc = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    msg_out, msg_err = proc.communicate()
+    # the try...except...finally construct is necessary
+    # do delete the temporary file we created even if something
+    # goes wrong in the execution of treceval.
+    try:
+        proc = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        resp = proc.communicate()
+        msg_out, msg_err = (msg.decode('utf-8') for msg in resp)
+    except Exception:
+        raise
+    finally:
+        os.remove(tmp_fn)
 
-    # remove temporary query file
-    os.remove(tmp_fn)
-    # print tmp_fn
-
+    # raise an error if trec_eval return an error
     if msg_err:
         raise OSError(msg_err)
 
@@ -172,7 +189,7 @@ def main():
     '''Script main method'''
 
     # load and parse queries
-    with file(QUERIES_FP) as f:
+    with open(QUERIES_FP) as f:
         queries = parse_raw_queries(f.read())
 
     # get results for query

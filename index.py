@@ -1,5 +1,3 @@
-from __future__ import unicode_literals, division
-
 # built-in modules
 import os
 import re
@@ -71,14 +69,16 @@ def index_parsed_data(documents, index_name, es_host, es_port):
 
     # obtain a client fo elasticsearch
     es_client = elasticsearch.client.Elasticsearch(
-        'http://{}:{}'.format(es_host, es_port))
+        'http://{}:{}'.format(es_host, es_port), timeout=120
+    )
 
-    for doc_id, doc_content in documents.iteritems():
+    for doc_id, doc_content in documents.items():
         # the name 'content' for the content field and the doc_type are
         # specified in the mapping
         es_client.create(
             index=index_name, id=doc_id, doc_type='document',
-            body={'content': doc_content})
+            body={'content': doc_content}
+        )
 
 
 def bulk_index_parsed_data(
@@ -95,13 +95,15 @@ def bulk_index_parsed_data(
     '''
     # obtain a client fo elasticsearch
     es_client = elasticsearch.client.Elasticsearch(
-        'http://{}:{}'.format(es_host, es_port))
+        'http://{}:{}'.format(es_host, es_port),
+        timeout=120
+    )
 
     # initialize an operations counter and an operations collector
     cnt_ops = 0
     opts = []
 
-    for doc_id, doc_content in documents.iteritems():
+    for doc_id, doc_content in documents.items():
         # append appropriate operations
         opts.append({'create':
             { '_index': index_name, '_type': 'document', '_id' : doc_id}})
@@ -146,14 +148,14 @@ def main():
     '''Script main method'''
 
     # load the settings
-    with codecs.open(INDEX_SETTINGS_FP) as f:
+    with open(INDEX_SETTINGS_FP) as f:
         index_settings = json.load(f)
 
     # get all documents
     documents = {}
     for fn in os.listdir(DATA_DIR):
         fp = os.path.join(DATA_DIR, fn)
-        with codecs.open(fp) as f:
+        with open(fp) as f:
             documents.update(parse_raw_data(f.read()))
 
     # we time the operations
@@ -161,6 +163,7 @@ def main():
 
     # create the index
     create_index(INDEX_NAME, index_settings, ES_HOST, ES_PORT)
+
     # index data one by one
     index_parsed_data(documents, INDEX_NAME, ES_HOST, ES_PORT)
 

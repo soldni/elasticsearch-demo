@@ -1,5 +1,9 @@
 {
     "settings": {
+        "index": {
+            "number_of_replicas": 0,
+            "number_of_shards": 1
+        },
         "analysis": {
             "filter": {
                 "my_stopwords_filter": {
@@ -8,7 +12,7 @@
                 }
             },
             "analyzer": {
-                "my_filter": {
+                "my_analyzer": {
                     "type": "custom",
                     "tokenizer": "standard",
                     "filter": [
@@ -34,7 +38,7 @@
                     "type": "string",
                     "store": true,
                     "similarity": "my_bm25",
-                    "analyzer": "my_filter"
+                    "analyzer": "my_analyzer"
                 }
             }
         }
