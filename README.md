@@ -22,4 +22,5 @@ All documents and qrels are property of the [National Institute of Standards and
 ## FAQ
 
 **Q**: I get a `Undecodable raw error response from server: Expecting value: line 1 column 1 (char 0)` error when indexing the data!
+
 **A**: This appear to be a bug of the current version (2.4.0) elasticsearch Python library (see bug [# 441](https://github.com/elastic/elasticsearch-py/issues/441)). You can safely ignore this. 
