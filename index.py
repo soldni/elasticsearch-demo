@@ -27,7 +27,7 @@ def parse_raw_data(raw_data):
 
     # split documents by looking for end of document
     # and start of new document tags
-    raw_textuments = re.split(r'</DOC>\s*<DOC>', raw_data)
+    raw_documents = re.split(r'</DOC>\s*<DOC>', raw_data)
 
     for raw_doc in raw_documents:
         # find the document identifier
@@ -151,12 +151,18 @@ def main():
     with open(INDEX_SETTINGS_FP) as f:
         index_settings = json.load(f)
 
+    # we time the operations
+    start_time = time()
+
     # get all documents
     documents = {}
     for fn in os.listdir(DATA_DIR):
         fp = os.path.join(DATA_DIR, fn)
         with open(fp) as f:
             documents.update(parse_raw_data(f.read()))
+
+    end_time = time()
+    print('pre-processing:   {:.3f} s'.format(end_time - start_time))
 
     # we time the operations
     start_time = time()
@@ -180,7 +186,7 @@ def main():
         documents, INDEX_NAME, ES_HOST, ES_PORT, BULK_MAX_OPS_CNT)
 
     end_time = time()
-    print('bulk index:       {:.3f} s'.format(end_time - start_time))
+    print('bulk index: {:.3f} s'.format(end_time - start_time))
 
 
 if __name__ == '__main__':
