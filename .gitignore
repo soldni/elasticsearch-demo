@@ -64,8 +64,6 @@ target/
 # macOS files
 .DS_Store
 
-# Data directory
-data/
 
 # elasticsearch binaries
 elasticsearch-*
