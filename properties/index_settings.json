@@ -21,13 +21,13 @@
                         "my_stopwords_filter"
                     ]
                 }
-            },
-            "similarity" : {
-                "my_bm25" : {
-                    "type" : "BM25",
-                    "k1": 2.0,
-                    "b": 0.7
-                }
+            }
+        },
+        "similarity" : {
+            "my_bm25" : {
+                "type" : "BM25",
+                "k1": 2.0,
+                "b": 0.7
             }
         }
     },
