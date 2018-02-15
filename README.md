@@ -18,9 +18,3 @@ All documents and qrels are property of the [National Institute of Standards and
 2. Start Eilasticsearch. Assuming that you have unzipped Elasticsearch to the folder where this file is located, you can execute `./elasticsearch-6.2.1/bin/elasticsearch` if you are on a UNIX system, or `./elasticsearch-6.2.1/bin/elasticsearch.bat` if you are on Windows. For more information on how to install and run Elasticsearch, please visit [this page](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html).
 3. Execute `index.py`. This will index the collection.
 4. Execute `search.py`. This will search the collection and evaluate the results.
-
-## FAQ
-
-**Q**: I get a `Undecodable raw error response from server: Expecting value: line 1 column 1 (char 0)` error when indexing the data!
-
-**A**: This appear to be a bug of the current version (2.4.0) elasticsearch Python library (see bug [# 441](https://github.com/elastic/elasticsearch-py/issues/441)). You can safely ignore this.
