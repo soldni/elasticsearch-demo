@@ -1,6 +1,6 @@
 # Elasticsearch demo
 
-Demo for Elasticsearch v.2.4.0 (might run on subsequent 2.x releases, too; does not work on Elasticsearch 0.x and 1.x; I have not tested it on Elasticsearch 5, which is still in beta).
+Demo for Elasticsearch `v.6.2.1` (might run on subsequent `6.x` releases, too; does not work on Elasticsearch `0.x`, `1.x`, `2.x`, and `5.x`).
 
 All documents and qrels are property of the [National Institute of Standards and Technology](http://www.nist.gov) and have been released from research purposes as part of [TREC](http://trec.nist.gov).
 
@@ -15,7 +15,7 @@ All documents and qrels are property of the [National Institute of Standards and
 
 1. Install requirements in `requirements.txt`; that is, run `pip3 install -r requirements.txt`.
 2. Download the data files (documents, queries, and qrels) from [this page](https://github.com/lucasoldaini/elasticsearch-demo/releases/tag/data-v.1.0). Unzip them in the root of this project (i.e., where this file is).
-2. Start Eilasticsearch. Assuming that you have unzipped Elasticsearch to the folder where this file is located, you can execute `./elasticsearch-2.4.0/bin/elasticsearch` if you are on a UNIX system, or `./elasticsearch-2.4.0/bin/elasticsearch.bat` if you are on Windows. For more information on how to install and run Elasticsearch, please visit [this page](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html).
+2. Start Eilasticsearch. Assuming that you have unzipped Elasticsearch to the folder where this file is located, you can execute `./elasticsearch-6.2.1/bin/elasticsearch` if you are on a UNIX system, or `./elasticsearch-6.2.1/bin/elasticsearch.bat` if you are on Windows. For more information on how to install and run Elasticsearch, please visit [this page](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html).
 3. Execute `index.py`. This will index the collection.
 4. Execute `search.py`. This will search the collection and evaluate the results.
 
@@ -23,4 +23,4 @@ All documents and qrels are property of the [National Institute of Standards and
 
 **Q**: I get a `Undecodable raw error response from server: Expecting value: line 1 column 1 (char 0)` error when indexing the data!
 
-**A**: This appear to be a bug of the current version (2.4.0) elasticsearch Python library (see bug [# 441](https://github.com/elastic/elasticsearch-py/issues/441)). You can safely ignore this. 
+**A**: This appear to be a bug of the current version (2.4.0) elasticsearch Python library (see bug [# 441](https://github.com/elastic/elasticsearch-py/issues/441)). You can safely ignore this.

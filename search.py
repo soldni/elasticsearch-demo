@@ -70,7 +70,7 @@ def make_query_dsl(s):
     '''
 
     query = {
-        'fields': [],
+        'stored_fields': [],
         'query': {
             'match': {
                 'content': {

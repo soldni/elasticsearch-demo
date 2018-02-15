@@ -35,7 +35,7 @@
         "document": {
             "properties": {
                 "content": {
-                    "type": "string",
+                    "type": "text",
                     "store": true,
                     "similarity": "my_bm25",
                     "analyzer": "my_analyzer"
